@@ -1,0 +1,380 @@
+Segment-tree.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Segment Tree - DSA Fusion</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">DSA Fusion</div>
+      <ul class="nav-links">
+        <li><a href="main.html#topics">Topics</a></li>
+        <li><a href="main.html#key-concepts">Key Concepts</a></li>
+        <li><a href="main.html#about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="topic-hero">
+    <div class="topic-hero-content">
+      <h1><i class="fas fa-ruler-combined"></i> Segment Tree</h1>
+      <p>Learn about segment trees for efficient range queries</p>
+    </div>
+  </section>
+
+  <section class="topic-content">
+    <div class="container">
+      <div class="theory-section">
+        <h2>What is a Segment Tree?</h2>
+        <p>A segment tree is a data structure that allows answering range queries and performing range updates efficiently (O(log n) time).</p>
+        
+        <h3>Key Characteristics:</h3>
+        <ul>
+          <li><strong>Range Queries:</strong> Sum, min, max, etc. over any interval</li>
+          <li><strong>Efficient:</strong> O(log n) time for queries and updates</li>
+          <li><strong>Binary Tree:</strong> Each node represents a segment/interval</li>
+          <li><strong>Applications:</strong> Range queries, interval scheduling, computational geometry</li>
+        </ul>
+        
+        <h3>Basic Operations:</h3>
+        <div class="operations-grid">
+          <div class="operation-card">
+            <h4>Build</h4>
+            <p>Constructs the segment tree</p>
+            <pre><code>function build(start, end, idx) {
+  if (start === end) {
+    tree[idx] = arr[start];
+    return;
+  }
+  const mid = Math.floor((start + end) / 2);
+  build(start, mid, 2 * idx + 1);
+  build(mid + 1, end, 2 * idx + 2);
+  tree[idx] = tree[2 * idx + 1] + tree[2 * idx + 2];
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Query</h4>
+            <p>Performs a range query</p>
+            <pre><code>function query(qStart, qEnd, start, end, idx) {
+  if (qStart > end || qEnd < start) return 0;
+  if (qStart <= start && qEnd >= end) return tree[idx];
+  const mid = Math.floor((start + end) / 2);
+  return query(qStart, qEnd, start, mid, 2 * idx + 1) + 
+         query(qStart, qEnd, mid + 1, end, 2 * idx + 2);
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Update</h4>
+            <p>Updates a value in the array</p>
+            <pre><code>function update(pos, val, start, end, idx) {
+  if (start === end) {
+    arr[pos] = val;
+    tree[idx] = val;
+    return;
+  }
+  const mid = Math.floor((start + end) / 2);
+  if (pos <= mid) {
+    update(pos, val, start, mid, 2 * idx + 1);
+  } else {
+    update(pos, val, mid + 1, end, 2 * idx + 2);
+  }
+  tree[idx] = tree[2 * idx + 1] + tree[2 * idx + 2];
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Range Update</h4>
+            <p>Updates a range of values (lazy propagation)</p>
+            <pre><code>function rangeUpdate(l, r, val, start, end, idx) {
+  if (lazy[idx] !== 0) {
+    tree[idx] += (end - start + 1) * lazy[idx];
+    if (start !== end) {
+      lazy[2 * idx + 1] += lazy[idx];
+      lazy[2 * idx + 2] += lazy[idx];
+    }
+    lazy[idx] = 0;
+  }
+  if (start > end || start > r || end < l) return;
+  if (start >= l && end <= r) {
+    tree[idx] += (end - start + 1) * val;
+    if (start !== end) {
+      lazy[2 * idx + 1] += val;
+      lazy[2 * idx + 2] += val;
+    }
+    return;
+  }
+  const mid = Math.floor((start + end) / 2);
+  rangeUpdate(l, r, val, start, mid, 2 * idx + 1);
+  rangeUpdate(l, r, val, mid + 1, end, 2 * idx + 2);
+  tree[idx] = tree[2 * idx + 1] + tree[2 * idx + 2];
+}</code></pre>
+          </div>
+        </div>
+      </div>
+      
+      <div class="interactive-section">
+        <h2>Interactive Segment Tree</h2>
+        <div class="controls">
+          <input type="text" id="array-input" placeholder="Enter array (e.g., 1,2,3)" class="input-field">
+          <button onclick="buildSegmentTree()" class="btn btn-primary">Build Tree</button>
+          <input type="number" id="query-start" placeholder="Start" class="input-field small">
+          <input type="number" id="query-end" placeholder="End" class="input-field small">
+          <button onclick="queryRange()" class="btn btn-secondary">Query Range</button>
+          <input type="number" id="update-pos" placeholder="Position" class="input-field small">
+          <input type="number" id="update-val" placeholder="Value" class="input-field small">
+          <button onclick="updateValue()" class="btn btn-accent">Update</button>
+        </div>
+        <div id="segment-tree-visualization" class="visualization segment-viz"></div>
+        <div id="segment-tree-result" class="result-box"></div>
+      </div>
+
+      <div class="complexity-section">
+        <h3>Time Complexity:</h3>
+        <table class="complexity-table">
+          <tr>
+            <th>Operation</th>
+            <th>Time Complexity</th>
+            <th>Space Complexity</th>
+          </tr>
+          <tr>
+            <td>Build</td>
+            <td>O(n)</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td>Query</td>
+            <td>O(log n)</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Point Update</td>
+            <td>O(log n)</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Range Update</td>
+            <td>O(log n)</td>
+            <td>O(n)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="main.html#topics">Topics</a></li>
+          <li><a href="main.html#key-concepts">Key Concepts</a></li>
+          <li><a href="main.html#about">About</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <p>Email: contact@dsafusion.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Created by Ishan Verma and Jaskirat Singh | DSA Fusion &copy; 2023</p>
+    </div>
+  </footer>
+
+  <script>
+    let arr = [];
+    let tree = [];
+    let lazy = [];
+    let size = 0;
+  
+    function buildSegmentTree() {
+      const input = document.getElementById('array-input').value.trim();
+      if (!input) return;
+  
+      arr = input.split(',').map(Number);
+      size = arr.length;
+  
+      // Calculate tree size (next power of 2)
+      let treeSize = 1;
+      while (treeSize < size) treeSize <<= 1;
+      treeSize = 2 * treeSize - 1;
+  
+      tree = new Array(treeSize).fill(0);
+      lazy = new Array(treeSize).fill(0);
+  
+      build(0, size - 1, 0);
+      visualizeSegmentTree();
+      document.getElementById('array-input').value = '';
+    }
+  
+    function build(start, end, idx) {
+      if (start === end) {
+        tree[idx] = arr[start];
+        return;
+      }
+  
+      const mid = Math.floor((start + end) / 2);
+      build(start, mid, 2 * idx + 1);
+      build(mid + 1, end, 2 * idx + 2);
+  
+      tree[idx] = tree[2 * idx + 1] + tree[2 * idx + 2];
+    }
+  
+    function queryRange() {
+      if (size === 0) {
+        document.getElementById('segment-tree-result').textContent = "Please build the tree first";
+        return;
+      }
+  
+      const qStart = parseInt(document.getElementById('query-start').value);
+      const qEnd = parseInt(document.getElementById('query-end').value);
+  
+      if (isNaN(qStart) || isNaN(qEnd) || qStart < 0 || qEnd >= size || qStart > qEnd) {
+        document.getElementById('segment-tree-result').textContent = "Invalid range";
+        return;
+      }
+  
+      const sum = query(qStart, qEnd, 0, size - 1, 0);
+      document.getElementById('segment-tree-result').textContent =
+        `Sum from index ${qStart} to ${qEnd}: ${sum}`;
+    }
+  
+    function query(qStart, qEnd, start, end, idx) {
+      if (lazy[idx] !== 0) {
+        tree[idx] += (end - start + 1) * lazy[idx];
+        if (start !== end) {
+          lazy[2 * idx + 1] += lazy[idx];
+          lazy[2 * idx + 2] += lazy[idx];
+        }
+        lazy[idx] = 0;
+      }
+  
+      if (qStart > end || qEnd < start) return 0;
+      if (qStart <= start && qEnd >= end) return tree[idx];
+  
+      const mid = Math.floor((start + end) / 2);
+      return query(qStart, qEnd, start, mid, 2 * idx + 1) +
+             query(qStart, qEnd, mid + 1, end, 2 * idx + 2);
+    }
+  
+    function updateValue() {
+      if (size === 0) {
+        document.getElementById('segment-tree-result').textContent = "Please build the tree first";
+        return;
+      }
+  
+      const pos = parseInt(document.getElementById('update-pos').value);
+      const val = parseInt(document.getElementById('update-val').value);
+  
+      if (isNaN(pos) || isNaN(val) || pos < 0 || pos >= size) {
+        document.getElementById('segment-tree-result').textContent = "Invalid position or value";
+        return;
+      }
+  
+      update(pos, val, 0, size - 1, 0);
+      visualizeSegmentTree();
+      document.getElementById('segment-tree-result').textContent =
+        `Updated index ${pos} to ${val}`;
+    }
+  
+    function update(pos, val, start, end, idx) {
+      if (start === end) {
+        arr[pos] = val;
+        tree[idx] = val;
+        return;
+      }
+  
+      const mid = Math.floor((start + end) / 2);
+      if (pos <= mid) {
+        update(pos, val, start, mid, 2 * idx + 1);
+      } else {
+        update(pos, val, mid + 1, end, 2 * idx + 2);
+      }
+  
+      tree[idx] = tree[2 * idx + 1] + tree[2 * idx + 2];
+    }
+  
+    function visualizeSegmentTree() {
+      const container = document.getElementById('segment-tree-visualization');
+      container.innerHTML = '';
+  
+      if (size === 0) {
+        container.innerHTML = '<p class="empty-message">Segment tree not built</p>';
+        return;
+      }
+  
+      // Calculate tree height
+      let height = 0;
+      let nodes = 1;
+      while (nodes < size) {
+        height++;
+        nodes *= 2;
+      }
+  
+      // Create visualization levels
+      const treeContainer = document.createElement('div');
+      treeContainer.className = 'segment-container';
+  
+      // Add array visualization
+      const arrayDiv = document.createElement('div');
+      arrayDiv.className = 'segment-array';
+      arrayDiv.textContent = `Original Array: [${arr.join(', ')}]`;
+      treeContainer.appendChild(arrayDiv);
+  
+      // Build tree visualization level by level
+      const queue = [{ idx: 0, level: 0, start: 0, end: size - 1 }];
+      let currentLevel = 0;
+      let levelContainer = null;
+  
+      while (queue.length > 0) {
+        const { idx, level, start, end } = queue.shift();
+  
+        if (level !== currentLevel) {
+          currentLevel = level;
+          levelContainer = document.createElement('div');
+          levelContainer.className = 'segment-level';
+          treeContainer.appendChild(levelContainer);
+        }
+  
+        const nodeElement = document.createElement('div');
+        nodeElement.className = 'segment-node';
+  
+        const nodeValue = document.createElement('div');
+        nodeValue.className = 'segment-node-value';
+        nodeValue.textContent = tree[idx];
+        nodeElement.appendChild(nodeValue);
+  
+        const nodeRange = document.createElement('div');
+        nodeRange.className = 'segment-node-range';
+        nodeRange.textContent = `[${start},${end}]`;
+        nodeElement.appendChild(nodeRange);
+  
+        if (lazy[idx] !== 0) {
+          const lazyValue = document.createElement('div');
+          lazyValue.className = 'segment-lazy';
+          lazyValue.textContent = `Lazy: ${lazy[idx]}`;
+          nodeElement.appendChild(lazyValue);
+        }
+  
+        levelContainer.appendChild(nodeElement);
+  
+        if (2 * idx + 1 < tree.length) {
+          const mid = Math.floor((start + end) / 2);
+          queue.push({ idx: 2 * idx + 1, level: level + 1, start, end: mid });
+          queue.push({ idx: 2 * idx + 2, level: level + 1, start: mid + 1, end });
+        }
+      }
+  
+      container.appendChild(treeContainer);
+    }
+  
+    // Initialize visualization
+    visualizeSegmentTree();
+  </script>
+  
+</body>
+</html>

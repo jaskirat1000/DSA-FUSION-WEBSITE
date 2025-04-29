@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linked List - DSA Fusion</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">DSA Fusion</div>
+      <ul class="nav-links">
+        <li><a href="main.html#topics">Topics</a></li>
+        <li><a href="main.html#key-concepts">Key Concepts</a></li>
+        <li><a href="main.html#about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="topic-hero">
+    <div class="topic-hero-content">
+      <h1><i class="fas fa-link"></i> Linked List</h1>
+      <p>Learn about linked lists and their operations</p>
+    </div>
+  </section>
+
+  <section class="topic-content">
+    <div class="container">
+      <div class="theory-section">
+        <h2>What is a Linked List?</h2>
+        <p>A linked list is a linear data structure where elements are not stored at contiguous memory locations. Each element (node) contains a data field and a reference (link) to the next node.</p>
+        
+        <h3>Key Characteristics:</h3>
+        <ul>
+          <li><strong>Dynamic Size:</strong> Can grow or shrink during program execution</li>
+          <li><strong>Non-contiguous Memory:</strong> Elements can be stored anywhere in memory</li>
+          <li><strong>Node Structure:</strong> Each node contains data and a pointer to the next node</li>
+          <li><strong>Types:</strong> Singly linked, doubly linked, circular linked lists</li>
+        </ul>
+        
+        <h3>Basic Operations:</h3>
+        <div class="operations-grid">
+          <div class="operation-card">
+            <h4>Insertion</h4>
+            <p>Adding a node at beginning, end or specific position</p>
+            <pre><code>function insertAtHead(data) {
+  let newNode = new Node(data);
+  newNode.next = head;
+  head = newNode;
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Deletion</h4>
+            <p>Removing a node from the list</p>
+            <pre><code>function deleteNode(key) {
+  let temp = head, prev = null;
+  if (temp != null && temp.data == key) {
+    head = temp.next;
+    return;
+  }
+  while (temp != null && temp.data != key) {
+    prev = temp;
+    temp = temp.next;
+  }
+  if (temp == null) return;
+  prev.next = temp.next;
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Traversal</h4>
+            <p>Visiting each node of the list</p>
+            <pre><code>function printList() {
+  let temp = head;
+  while (temp != null) {
+    console.log(temp.data);
+    temp = temp.next;
+  }
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Search</h4>
+            <p>Finding a node with given value</p>
+            <pre><code>function search(key) {
+  let current = head;
+  while (current != null) {
+    if (current.data == key) return true;
+    current = current.next;
+  }
+  return false;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+      
+      <div class="interactive-section">
+        <h2>Interactive Linked List</h2>
+        <div class="controls">
+          <input type="text" id="ll-input" placeholder="Enter value" class="input-field">
+          <button onclick="insertAtHead()" class="btn btn-primary">Insert at Head</button>
+          <button onclick="insertAtTail()" class="btn btn-secondary">Insert at Tail</button>
+          <input type="number" id="ll-position" placeholder="Position" class="input-field small">
+          <button onclick="insertAtPosition()" class="btn btn-accent">Insert at Position</button>
+          <button onclick="deleteNode()" class="btn btn-danger">Delete Value</button>
+        </div>
+        <div id="linked-list-visualization" class="visualization"></div>
+      </div>
+
+      <div class="complexity-section">
+        <h3>Time Complexity:</h3>
+        <table class="complexity-table">
+          <tr>
+            <th>Operation</th>
+            <th>Time Complexity</th>
+          </tr>
+          <tr>
+            <td>Access</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td>Search</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td>Insertion (head)</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Insertion (tail)</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td>Deletion</td>
+            <td>O(n)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="main.html#topics">Topics</a></li>
+          <li><a href="main.html#key-concepts">Key Concepts</a></li>
+          <li><a href="main.html#about">About</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <p>Email: contact@dsafusion.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Created by Ishan Verma and Jaskirat Singh | DSA Fusion &copy; 2023</p>
+    </div>
+  </footer>
+
+  <script>
+    class Node {
+      constructor(data) {
+        this.data = data;
+        this.next = null;
+      }
+    }
+
+    let head = null;
+
+    function insertAtHead() {
+      const value = document.getElementById('ll-input').value;
+      if (!value) return;
+      
+      const newNode = new Node(value);
+      newNode.next = head;
+      head = newNode;
+      visualizeLinkedList();
+      document.getElementById('ll-input').value = '';
+    }
+
+    function insertAtTail() {
+      const value = document.getElementById('ll-input').value;
+      if (!value) return;
+      
+      const newNode = new Node(value);
+      if (!head) {
+        head = newNode;
+      } else {
+        let current = head;
+        while (current.next) {
+          current = current.next;
+        }
+        current.next = newNode;
+      }
+      visualizeLinkedList();
+      document.getElementById('ll-input').value = '';
+    }
+
+    function insertAtPosition() {
+      const value = document.getElementById('ll-input').value;
+      const position = parseInt(document.getElementById('ll-position').value);
+      if (!value || isNaN(position)) return;
+      
+      if (position === 0) {
+        insertAtHead();
+        return;
+      }
+      
+      const newNode = new Node(value);
+      let current = head;
+      let count = 0;
+      
+      while (current && count < position - 1) {
+        current = current.next;
+        count++;
+      }
+      
+      if (!current) {
+        alert("Position out of bounds");
+        return;
+      }
+      
+      newNode.next = current.next;
+      current.next = newNode;
+      visualizeLinkedList();
+      document.getElementById('ll-input').value = '';
+      document.getElementById('ll-position').value = '';
+    }
+
+    function deleteNode() {
+      const value = document.getElementById('ll-input').value;
+      if (!value || !head) return;
+      
+      if (head.data === value) {
+        head = head.next;
+        visualizeLinkedList();
+        return;
+      }
+      
+      let current = head;
+      while (current.next && current.next.data !== value) {
+        current = current.next;
+      }
+      
+      if (current.next) {
+        current.next = current.next.next;
+        visualizeLinkedList();
+      }
+      document.getElementById('ll-input').value = '';
+    }
+
+    function visualizeLinkedList() {
+      const container = document.getElementById('linked-list-visualization');
+      container.innerHTML = '';
+      
+      if (!head) {
+        container.innerHTML = '<p class="empty-message">Linked list is empty</p>';
+        return;
+      }
+      
+      let current = head;
+      while (current) {
+        const nodeElement = document.createElement('div');
+        nodeElement.className = 'll-node';
+        
+        const dataElement = document.createElement('div');
+        dataElement.className = 'll-node-data';
+        dataElement.textContent = current.data;
+        
+        nodeElement.appendChild(dataElement);
+        
+        if (current.next) {
+          const arrowElement = document.createElement('div');
+          arrowElement.className = 'll-arrow';
+          arrowElement.innerHTML = '→';
+          nodeElement.appendChild(arrowElement);
+        }
+        
+        container.appendChild(nodeElement);
+        current = current.next;
+      }
+    }
+  </script>
+</body>
+</html>

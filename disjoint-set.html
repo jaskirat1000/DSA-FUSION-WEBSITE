@@ -1,0 +1,359 @@
+<section id="disjoint-set" class="data-structure-section">
+    <div class="container">
+      <h2 class="section-title animate__animated animate__fadeIn">Disjoint Set Union (DSU)</h2>
+      
+      <div class="row">
+        <div class="col-md-6">
+          <div class="ds-card animate__animated animate__fadeInLeft">
+            <h3><i class="fas fa-object-group"></i> Overview</h3>
+            <p>Also known as Union-Find, the Disjoint Set Union is a data structure that tracks elements partitioned into disjoint (non-overlapping) subsets.</p>
+            <div class="complexity">
+              <h4>Complexity:</h4>
+              <ul>
+                <li><strong>Find:</strong> O(α(n)) (amortized)</li>
+                <li><strong>Union:</strong> O(α(n)) (amortized)</li>
+                <li><strong>Space:</strong> O(n)</li>
+              </ul>
+              <p>Where α is the inverse Ackermann function (effectively constant).</p>
+            </div>
+          </div>
+  
+          <div class="ds-card animate__animated animate__fadeInLeft animate-delay-1">
+            <h3><i class="fas fa-code"></i> Operations</h3>
+            <div class="operation">
+              <h4>makeSet(x)</h4>
+              <p>Creates a new set containing element x</p>
+            </div>
+            <div class="operation">
+              <h4>find(x)</h4>
+              <p>Returns the representative of the set containing x</p>
+            </div>
+            <div class="operation">
+              <h4>union(x, y)</h4>
+              <p>Merges the sets containing x and y</p>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-md-6">
+          <div class="ds-card animate__animated animate__fadeInRight">
+            <h3><i class="fas fa-project-diagram"></i> Visualization</h3>
+            <div class="visualization" id="dsu-visualization">
+              <!-- Visualization will be rendered here -->
+              <div class="dsu-graph"></div>
+              <div class="controls mt-3">
+                <button class="btn btn-primary make-set">Make Set</button>
+                <button class="btn btn-success union">Union</button>
+                <button class="btn btn-info find">Find</button>
+                <button class="btn btn-secondary reset">Reset</button>
+              </div>
+            </div>
+          </div>
+  
+          <div class="ds-card animate__animated animate__fadeInRight animate-delay-1">
+            <h3><i class="fas fa-lightbulb"></i> Optimizations</h3>
+            <div class="optimization">
+              <h4>Path Compression</h4>
+              <p>Flattens the structure during find operations</p>
+            </div>
+            <div class="optimization">
+              <h4>Union by Rank/Size</h4>
+              <p>Always attaches the shorter tree to the root of the taller tree</p>
+            </div>
+            <pre><code class="language-cpp">
+  // Path Compression
+  int find(int x) {
+    if (parent[x] != x)
+      parent[x] = find(parent[x]);
+    return parent[x];
+  }
+  
+  // Union by Rank
+  void union(int x, int y) {
+    x = find(x);
+    y = find(y);
+    if (rank[x] > rank[y])
+      parent[y] = x;
+    else {
+      parent[x] = y;
+      if (rank[x] == rank[y])
+        rank[y]++;
+    }
+  }
+            </code></pre>
+          </div>
+        </div>
+      </div>
+  
+      <div class="applications ds-card animate__animated animate__fadeInUp">
+        <h3><i class="fas fa-tasks"></i> Applications</h3>
+        <ul>
+          <li>Kruskal's algorithm for Minimum Spanning Tree</li>
+          <li>Connected components in undirected graphs</li>
+          <li>Cycle detection in undirected graphs</li>
+          <li>Image processing (pixel connectivity)</li>
+          <li>Network connectivity problems</li>
+        </ul>
+      </div>
+  
+      <div class="practice ds-card animate__animated animate__fadeInUp">
+        <h3><i class="fas fa-laptop-code"></i> Practice Problems</h3>
+        <div class="problems-list">
+          <a href="#" class="problem-link">Friend Circles (Leetcode 547)</a>
+          <a href="#" class="problem-link">Redundant Connection (Leetcode 684)</a>
+          <a href="#" class="problem-link">Accounts Merge (Leetcode 721)</a>
+          <a href="#" class="problem-link">Number of Islands II (Leetcode 305)</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <style>
+  .data-structure-section {
+    padding: 4rem 0;
+    background-color: #f8f9fa;
+  }
+  
+  .section-title {
+    color: #3a0ca3;
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+  }
+  
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    margin: 1rem auto 0;
+    border-radius: 2px;
+  }
+  
+  .ds-card {
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+  }
+  
+  .ds-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  }
+  
+  .ds-card h3 {
+    color: #4361ee;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .ds-card h3 i {
+    margin-right: 10px;
+  }
+  
+  .complexity ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .complexity li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .operation, .optimization {
+    margin-bottom: 1.5rem;
+  }
+  
+  .operation h4, .optimization h4 {
+    color: #f72585;
+    margin-bottom: 0.5rem;
+  }
+  
+  pre {
+    background: #2b2b2b;
+    color: #f8f8f2;
+    padding: 1rem;
+    border-radius: 5px;
+    overflow-x: auto;
+  }
+  
+  .problems-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .problem-link {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: #e9ecef;
+    border-radius: 20px;
+    color: #3a0ca3;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .problem-link:hover {
+    background: #3a0ca3;
+    color: white;
+  }
+  
+  .dsu-graph {
+    height: 300px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    border: 1px dashed #ccc;
+  }
+  
+  .controls {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .btn {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary {
+    background: #4361ee;
+    border-color: #4361ee;
+  }
+  
+  .btn-success {
+    background: #4cc9f0;
+    border-color: #4cc9f0;
+  }
+  
+  .btn-info {
+    background: #f72585;
+    border-color: #f72585;
+  }
+  
+  .btn-secondary {
+    background: #6c757d;
+    border-color: #6c757d;
+  }
+  </style>
+  
+  <script>
+  // Basic DSU Visualization Logic
+  document.addEventListener('DOMContentLoaded', function() {
+    const visualization = document.querySelector('.dsu-graph');
+    const makeSetBtn = document.querySelector('.make-set');
+    const unionBtn = document.querySelector('.union');
+    const findBtn = document.querySelector('.find');
+    const resetBtn = document.querySelector('.reset');
+    
+    let sets = [];
+    let nextId = 1;
+    
+    // Initialize with some sample sets
+    initializeSets();
+    
+    function initializeSets() {
+      sets = [
+        { id: 1, parent: 1, rank: 0 },
+        { id: 2, parent: 2, rank: 0 },
+        { id: 3, parent: 3, rank: 0 },
+        { id: 4, parent: 4, rank: 0 }
+      ];
+      nextId = 5;
+      renderSets();
+    }
+    
+    function renderSets() {
+      visualization.innerHTML = '';
+      
+      sets.forEach(set => {
+        const setElement = document.createElement('div');
+        setElement.className = 'set-element';
+        setElement.innerHTML = `
+          <div class="set-id">${set.id}</div>
+          <div class="set-parent">Parent: ${set.parent}</div>
+          <div class="set-rank">Rank: ${set.rank}</div>
+        `;
+        setElement.style.border = '2px solid #4361ee';
+        setElement.style.borderRadius = '50%';
+        setElement.style.width = '80px';
+        setElement.style.height = '80px';
+        setElement.style.display = 'inline-flex';
+        setElement.style.flexDirection = 'column';
+        setElement.style.justifyContent = 'center';
+        setElement.style.alignItems = 'center';
+        setElement.style.margin = '10px';
+        setElement.style.backgroundColor = '#fff';
+        
+        visualization.appendChild(setElement);
+      });
+    }
+    
+    makeSetBtn.addEventListener('click', function() {
+      sets.push({ id: nextId, parent: nextId, rank: 0 });
+      nextId++;
+      renderSets();
+    });
+    
+    unionBtn.addEventListener('click', function() {
+      if (sets.length < 2) return;
+      
+      // Simple union implementation (not optimized)
+      const randomIdx1 = Math.floor(Math.random() * sets.length);
+      let randomIdx2;
+      do {
+        randomIdx2 = Math.floor(Math.random() * sets.length);
+      } while (randomIdx1 === randomIdx2);
+      
+      const set1 = sets[randomIdx1];
+      const set2 = sets[randomIdx2];
+      
+      // Simple union without path compression or rank
+      set2.parent = set1.id;
+      
+      renderSets();
+      highlightElements([randomIdx1, randomIdx2]);
+    });
+    
+    findBtn.addEventListener('click', function() {
+      if (sets.length === 0) return;
+      
+      const randomIdx = Math.floor(Math.random() * sets.length);
+      const set = sets[randomIdx];
+      
+      // Simple find without path compression
+      let current = set;
+      while (current.id !== current.parent) {
+        current = sets.find(s => s.id === current.parent);
+      }
+      
+      renderSets();
+      highlightElements([randomIdx]);
+    });
+    
+    resetBtn.addEventListener('click', initializeSets);
+    
+    function highlightElements(indices) {
+      const elements = visualization.querySelectorAll('.set-element');
+      indices.forEach(idx => {
+        if (elements[idx]) {
+          elements[idx].style.boxShadow = '0 0 10px #f72585';
+          setTimeout(() => {
+            elements[idx].style.boxShadow = 'none';
+          }, 1000);
+        }
+      });
+    }
+  });
+  </script>

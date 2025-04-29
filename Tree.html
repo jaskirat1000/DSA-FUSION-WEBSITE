@@ -1,0 +1,392 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trees - DSA Fusion</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">DSA Fusion</div>
+      <ul class="nav-links">
+        <li><a href="main.html#topics">Topics</a></li>
+        <li><a href="main.html#key-concepts">Key Concepts</a></li>
+        <li><a href="main.html#about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="topic-hero">
+    <div class="topic-hero-content">
+      <h1><i class="fas fa-tree"></i> Trees</h1>
+      <p>Learn about tree data structures and their hierarchical nature</p>
+    </div>
+  </section>
+
+  <section class="topic-content">
+    <div class="container">
+      <div class="theory-section">
+        <h2>What is a Tree?</h2>
+        <p>A tree is a hierarchical data structure consisting of nodes connected by edges. Each tree has a root node and zero or more subtrees.</p>
+        
+        <h3>Key Characteristics:</h3>
+        <ul>
+          <li><strong>Hierarchical Structure:</strong> Parent-child relationships between nodes</li>
+          <li><strong>Root Node:</strong> The topmost node with no parent</li>
+          <li><strong>Leaf Nodes:</strong> Nodes with no children</li>
+          <li><strong>Binary Trees:</strong> Each node has at most two children (left and right)</li>
+        </ul>
+        
+        <h3>Basic Operations:</h3>
+        <div class="operations-grid">
+          <div class="operation-card">
+            <h4>Insertion</h4>
+            <p>Adds a new node to the tree</p>
+            <pre><code>function insert(value) {
+  if (!root) {
+    root = new Node(value);
+    return;
+  }
+  let current = root;
+  while (true) {
+    if (value < current.value) {
+      if (!current.left) {
+        current.left = new Node(value);
+        return;
+      }
+      current = current.left;
+    } else {
+      if (!current.right) {
+        current.right = new Node(value);
+        return;
+      }
+      current = current.right;
+    }
+  }
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Search</h4>
+            <p>Finds a node with given value</p>
+            <pre><code>function search(value) {
+  let current = root;
+  while (current) {
+    if (value === current.value) return current;
+    if (value < current.value) {
+      current = current.left;
+    } else {
+      current = current.right;
+    }
+  }
+  return null;
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Traversal</h4>
+            <p>Visits all nodes in specific order</p>
+            <pre><code>function inOrder(node) {
+  if (node) {
+    inOrder(node.left);
+    console.log(node.value);
+    inOrder(node.right);
+  }
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Deletion</h4>
+            <p>Removes a node from the tree</p>
+            <pre><code>function deleteNode(value) {
+  root = deleteRec(root, value);
+}
+function deleteRec(root, value) {
+  if (!root) return null;
+  if (value < root.value) {
+    root.left = deleteRec(root.left, value);
+  } else if (value > root.value) {
+    root.right = deleteRec(root.right, value);
+  } else {
+    if (!root.left) return root.right;
+    if (!root.right) return root.left;
+    root.value = minValue(root.right);
+    root.right = deleteRec(root.right, root.value);
+  }
+  return root;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+      
+      <div class="interactive-section">
+        <h2>Interactive Binary Tree</h2>
+        <div class="controls">
+          <input type="number" id="tree-input" placeholder="Enter value" class="input-field">
+          <button onclick="insertNode()" class="btn btn-primary">Insert</button>
+          <button onclick="deleteNode()" class="btn btn-danger">Delete</button>
+          <button onclick="searchNode()" class="btn btn-secondary">Search</button>
+          <select id="traversal-type" class="input-field">
+            <option value="inorder">In-Order</option>
+            <option value="preorder">Pre-Order</option>
+            <option value="postorder">Post-Order</option>
+          </select>
+          <button onclick="traverseTree()" class="btn btn-accent">Traverse</button>
+        </div>
+        <div id="tree-visualization" class="visualization tree-viz"></div>
+        <div id="traversal-result" class="traversal-result"></div>
+      </div>
+
+      <div class="complexity-section">
+        <h3>Time Complexity:</h3>
+        <table class="complexity-table">
+          <tr>
+            <th>Operation</th>
+            <th>Average Case</th>
+            <th>Worst Case</th>
+          </tr>
+          <tr>
+            <td>Insertion</td>
+            <td>O(log n)</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td>Deletion</td>
+            <td>O(log n)</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td>Search</td>
+            <td>O(log n)</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td>Traversal</td>
+            <td>O(n)</td>
+            <td>O(n)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="main.html#topics">Topics</a></li>
+          <li><a href="main.html#key-concepts">Key Concepts</a></li>
+          <li><a href="main.html#about">About</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <p>Email: contact@dsafusion.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Created by Ishan Verma and Jaskirat Singh | DSA Fusion &copy; 2023</p>
+    </div>
+  </footer>
+
+  <script>
+        class TreeNode {
+          constructor(value) {
+            this.value = value;
+            this.left = null;
+            this.right = null;
+          }
+        }
+    
+        let root = null;
+    
+        function insertNode() {
+          const value = parseInt(document.getElementById('tree-input').value);
+          if (isNaN(value)) return;
+          
+          const newNode = new TreeNode(value);
+          
+          if (!root) {
+            root = newNode;
+          } else {
+            let current = root;
+            while (true) {
+              if (value < current.value) {
+                if (!current.left) {
+                  current.left = newNode;
+                  break;
+                }
+                current = current.left;
+              } else {
+                if (!current.right) {
+                  current.right = newNode;
+                  break;
+                }
+                current = current.right;
+              }
+            }
+          }
+          
+          visualizeTree();
+          document.getElementById('tree-input').value = '';
+        }
+    
+        function deleteNode() {
+          const value = parseInt(document.getElementById('tree-input').value);
+          if (isNaN(value)) return;
+          
+          root = deleteNodeRec(root, value);
+          visualizeTree();
+          document.getElementById('tree-input').value = '';
+        }
+    
+        function deleteNodeRec(node, value) {
+          if (!node) return null;
+          
+          if (value < node.value) {
+            node.left = deleteNodeRec(node.left, value);
+          } else if (value > node.value) {
+            node.right = deleteNodeRec(node.right, value);
+          } else {
+            if (!node.left) return node.right;
+            if (!node.right) return node.left;
+            
+            node.value = findMinValue(node.right);
+            node.right = deleteNodeRec(node.right, node.value);
+          }
+          
+          return node;
+        }
+    
+        function findMinValue(node) {
+          let min = node.value;
+          while (node.left) {
+            min = node.left.value;
+            node = node.left;
+          }
+          return min;
+        }
+    
+        function searchNode() {
+          const value = parseInt(document.getElementById('tree-input').value);
+          if (isNaN(value)) return;
+          
+          let current = root;
+          while (current) {
+            if (value === current.value) {
+              alert(`Found node with value ${value}`); // Fixed: Added backticks
+              return;
+            } else if (value < current.value) {
+              current = current.left;
+            } else {
+              current = current.right;
+            }
+          }
+          
+          alert(`Node with value ${value} not found`); // Fixed: Added backticks
+        }
+    
+        function traverseTree() {
+          const traversalType = document.getElementById('traversal-type').value;
+          const result = [];
+          
+          switch (traversalType) {
+            case 'inorder':
+              inOrderTraversal(root, result);
+              break;
+            case 'preorder':
+              preOrderTraversal(root, result);
+              break;
+            case 'postorder':
+              postOrderTraversal(root, result);
+              break;
+          }
+          
+          document.getElementById('traversal-result').textContent = 
+            `${traversalType.charAt(0).toUpperCase() + traversalType.slice(1)} Traversal: ${result.join(' → ')}`; // Fixed: Added backticks
+        }
+    
+        function inOrderTraversal(node, result) {
+          if (node) {
+            inOrderTraversal(node.left, result);
+            result.push(node.value);
+            inOrderTraversal(node.right, result);
+          }
+        }
+    
+        function preOrderTraversal(node, result) {
+          if (node) {
+            result.push(node.value);
+            preOrderTraversal(node.left, result);
+            preOrderTraversal(node.right, result);
+          }
+        }
+    
+        function postOrderTraversal(node, result) {
+          if (node) {
+            postOrderTraversal(node.left, result);
+            postOrderTraversal(node.right, result);
+            result.push(node.value);
+          }
+        }
+    
+        function visualizeTree() {
+          const container = document.getElementById('tree-visualization');
+          container.innerHTML = '';
+          
+          if (!root) {
+            container.innerHTML = '<p class="empty-message">Tree is empty</p>';
+            return;
+          }
+          
+          // Create a tree visualization using nested divs
+          const treeContainer = document.createElement('div');
+          treeContainer.className = 'tree-container';
+          
+          // Build the tree recursively
+          buildTreeVisual(root, treeContainer);
+          container.appendChild(treeContainer);
+        }
+    
+        function buildTreeVisual(node, parentElement) {
+          if (!node) return;
+          
+          const nodeElement = document.createElement('div');
+          nodeElement.className = 'tree-node';
+          nodeElement.textContent = node.value;
+          
+          const childrenContainer = document.createElement('div');
+          childrenContainer.className = 'tree-children';
+          
+          if (node.left || node.right) {
+            if (node.left) {
+              buildTreeVisual(node.left, childrenContainer);
+            } else {
+              const emptyNode = document.createElement('div');
+              emptyNode.className = 'tree-node empty';
+              emptyNode.textContent = 'null';
+              childrenContainer.appendChild(emptyNode);
+            }
+            
+            if (node.right) {
+              buildTreeVisual(node.right, childrenContainer);
+            } else {
+              const emptyNode = document.createElement('div');
+              emptyNode.className = 'tree-node empty';
+              emptyNode.textContent = 'null';
+              childrenContainer.appendChild(emptyNode);
+            }
+          }
+          
+          nodeElement.appendChild(childrenContainer);
+          parentElement.appendChild(nodeElement);
+        }
+    
+        // Initialize visualization
+        visualizeTree();
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heaps - DSA Fusion</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">DSA Fusion</div>
+      <ul class="nav-links">
+        <li><a href="main.html#topics">Topics</a></li>
+        <li><a href="main.html#key-concepts">Key Concepts</a></li>
+        <li><a href="main.html#about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="topic-hero">
+    <div class="topic-hero-content">
+      <h1><i class="fas fa-sitemap"></i> Heaps</h1>
+      <p>Learn about heap data structures and priority queues</p>
+    </div>
+  </section>
+
+  <section class="topic-content">
+    <div class="container">
+      <div class="theory-section">
+        <h2>What is a Heap?</h2>
+        <p>A heap is a specialized tree-based data structure that satisfies the heap property. It's commonly implemented as a binary heap.</p>
+        
+        <h3>Key Characteristics:</h3>
+        <ul>
+          <li><strong>Heap Property:</strong> In a max-heap, parent ≥ children; in min-heap, parent ≤ children</li>
+          <li><strong>Complete Binary Tree:</strong> All levels are fully filled except possibly the last</li>
+          <li><strong>Array Representation:</strong> Can be efficiently stored in an array</li>
+          <li><strong>Priority Queue:</strong> Efficiently retrieves max/min element</li>
+        </ul>
+        
+        <h3>Basic Operations:</h3>
+        <div class="operations-grid">
+          <div class="operation-card">
+            <h4>Insert</h4>
+            <p>Adds a new element to the heap</p>
+            <pre><code>function insert(value) {
+  heap.push(value);
+  let current = heap.length - 1;
+  while (current > 0) {
+    const parent = Math.floor((current - 1) / 2);
+    if (heap[parent] >= heap[current]) break;
+    [heap[parent], heap[current]] = [heap[current], heap[parent]];
+    current = parent;
+  }
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Extract</h4>
+            <p>Removes and returns the root element</p>
+            <pre><code>function extractMax() {
+  if (heap.length === 0) return null;
+  const max = heap[0];
+  heap[0] = heap[heap.length - 1];
+  heap.pop();
+  heapify(0);
+  return max;
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Heapify</h4>
+            <p>Maintains the heap property</p>
+            <pre><code>function heapify(index) {
+  let largest = index;
+  const left = 2 * index + 1;
+  const right = 2 * index + 2;
+  
+  if (left < heap.length && heap[left] > heap[largest]) {
+    largest = left;
+  }
+  if (right < heap.length && heap[right] > heap[largest]) {
+    largest = right;
+  }
+  if (largest !== index) {
+    [heap[index], heap[largest]] = [heap[largest], heap[index]];
+    heapify(largest);
+  }
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Build Heap</h4>
+            <p>Converts an array into a heap</p>
+            <pre><code>function buildHeap(array) {
+  heap = [...array];
+  for (let i = Math.floor(heap.length / 2) - 1; i >= 0; i--) {
+    heapify(i);
+  }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+      
+      <div class="interactive-section">
+        <h2>Interactive Max-Heap</h2>
+        <div class="controls">
+          <input type="number" id="heap-input" placeholder="Enter value" class="input-field">
+          <button onclick="insertHeap()" class="btn btn-primary">Insert</button>
+          <button onclick="extractMax()" class="btn btn-danger">Extract Max</button>
+          <button onclick="peekHeap()" class="btn btn-secondary">Peek</button>
+          <button onclick="buildRandomHeap()" class="btn btn-accent">Random Heap</button>
+        </div>
+        <div id="heap-visualization" class="visualization tree-viz"></div>
+      </div>
+
+      <div class="complexity-section">
+        <h3>Time Complexity:</h3>
+        <table class="complexity-table">
+          <tr>
+            <th>Operation</th>
+            <th>Time Complexity</th>
+          </tr>
+          <tr>
+            <td>Insert</td>
+            <td>O(log n)</td>
+          </tr>
+          <tr>
+            <td>Extract Max/Min</td>
+            <td>O(log n)</td>
+          </tr>
+          <tr>
+            <td>Peek</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Build Heap</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td>Heapify</td>
+            <td>O(log n)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="main.html#topics">Topics</a></li>
+          <li><a href="main.html#key-concepts">Key Concepts</a></li>
+          <li><a href="main.html#about">About</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <p>Email: contact@dsafusion.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Created by Ishan Verma and Jaskirat Singh | DSA Fusion &copy; 2023</p>
+    </div>
+  </footer>
+
+  <script>
+    let heap = [];
+
+    function insertHeap() {
+      const value = parseInt(document.getElementById('heap-input').value);
+      if (isNaN(value)) return;
+      
+      heap.push(value);
+      let current = heap.length - 1;
+      
+      // Bubble up
+      while (current > 0) {
+        const parent = Math.floor((current - 1) / 2);
+        if (heap[parent] >= heap[current]) break;
+        [heap[parent], heap[current]] = [heap[current], heap[parent]];
+        current = parent;
+      }
+      
+      visualizeHeap();
+      document.getElementById('heap-input').value = '';
+    }
+
+    function extractMax() {
+      if (heap.length === 0) {
+        alert("Heap is empty!");
+        return;
+      }
+      
+      const max = heap[0];
+      heap[0] = heap[heap.length - 1];
+      heap.pop();
+      
+      // Heapify down
+      let current = 0;
+      while (true) {
+        let largest = current;
+        const left = 2 * current + 1;
+        const right = 2 * current + 2;
+        
+        if (left < heap.length && heap[left] > heap[largest]) {
+          largest = left;
+        }
+        if (right < heap.length && heap[right] > heap[largest]) {
+          largest = right;
+        }
+        if (largest === current) break;
+        
+        [heap[current], heap[largest]] = [heap[largest], heap[current]];
+        current = largest;
+      }
+      
+      alert(`Extracted max value: ${max}`);
+      visualizeHeap();
+    }
+
+    function peekHeap() {
+      if (heap.length === 0) {
+        alert("Heap is empty!");
+        return;
+      }
+      alert(`Max value: ${heap[0]}`);
+    }
+
+    function buildRandomHeap() {
+      const size = Math.floor(Math.random() * 10) + 5; // 5-14 elements
+      heap = [];
+      for (let i = 0; i < size; i++) {
+        heap.push(Math.floor(Math.random() * 100) + 1);
+      }
+      
+      // Build heap
+      for (let i = Math.floor(heap.length / 2) - 1; i >= 0; i--) {
+        heapify(i);
+      }
+      
+      visualizeHeap();
+    }
+
+    function heapify(index) {
+      let largest = index;
+      const left = 2 * index + 1;
+      const right = 2 * index + 2;
+      
+      if (left < heap.length && heap[left] > heap[largest]) {
+        largest = left;
+      }
+      if (right < heap.length && heap[right] > heap[largest]) {
+        largest = right;
+      }
+      if (largest !== index) {
+        [heap[index], heap[largest]] = [heap[largest], heap[index]];
+        heapify(largest);
+      }
+    }
+
+    function visualizeHeap() {
+      const container = document.getElementById('heap-visualization');
+      container.innerHTML = '';
+      
+      if (heap.length === 0) {
+        container.innerHTML = '<p class="empty-message">Heap is empty</p>';
+        return;
+      }
+      
+      // Create a tree visualization using nested divs
+      const treeContainer = document.createElement('div');
+      treeContainer.className = 'tree-container';
+      
+      // Build the heap tree level by level
+      const queue = [{ node: 0, parentElement: treeContainer }];
+      
+      while (queue.length > 0) {
+        const { node, parentElement } = queue.shift();
+        
+        const nodeElement = document.createElement('div');
+        nodeElement.className = 'tree-node';
+        nodeElement.textContent = heap[node];
+        
+        const childrenContainer = document.createElement('div');
+        childrenContainer.className = 'tree-children';
+        
+        const left = 2 * node + 1;
+        const right = 2 * node + 2;
+        
+        if (left < heap.length) {
+          queue.push({ node: left, parentElement: childrenContainer });
+        } else {
+          const emptyNode = document.createElement('div');
+          emptyNode.className = 'tree-node empty';
+          emptyNode.textContent = 'null';
+          childrenContainer.appendChild(emptyNode);
+        }
+        
+        if (right < heap.length) {
+          queue.push({ node: right, parentElement: childrenContainer });
+        } else if (left < heap.length) {
+          // Only add empty node if left exists but right doesn't
+          const emptyNode = document.createElement('div');
+          emptyNode.className = 'tree-node empty';
+          emptyNode.textContent = 'null';
+          childrenContainer.appendChild(emptyNode);
+        }
+        
+        nodeElement.appendChild(childrenContainer);
+        parentElement.appendChild(nodeElement);
+      }
+      
+      container.appendChild(treeContainer);
+    }
+
+    // Initialize visualization
+    visualizeHeap();
+</script>
+
+</body>
+</html>

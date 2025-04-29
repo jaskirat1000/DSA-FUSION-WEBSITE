@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stack - DSA Fusion</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">DSA Fusion</div>
+      <ul class="nav-links">
+        <li><a href="main.html#topics">Topics</a></li>
+        <li><a href="main.html#key-concepts">Key Concepts</a></li>
+        <li><a href="main.html#about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="topic-hero">
+    <div class="topic-hero-content">
+      <h1><i class="fas fa-layer-group"></i> Stack</h1>
+      <p>Learn about stacks and their LIFO principle</p>
+    </div>
+  </section>
+
+  <section class="topic-content">
+    <div class="container">
+      <div class="theory-section">
+        <h2>What is a Stack?</h2>
+        <p>A stack is a linear data structure that follows the Last In First Out (LIFO) principle. The element inserted last is accessed first.</p>
+        
+        <h3>Key Characteristics:</h3>
+        <ul>
+          <li><strong>LIFO Principle:</strong> Last In First Out</li>
+          <li><strong>Two Main Operations:</strong> Push (add) and Pop (remove)</li>
+          <li><strong>Top Pointer:</strong> Always points to the topmost element</li>
+          <li><strong>Implementation:</strong> Can be implemented using arrays or linked lists</li>
+        </ul>
+        
+        <h3>Basic Operations:</h3>
+        <div class="operations-grid">
+          <div class="operation-card">
+            <h4>Push</h4>
+            <p>Adds an element to the top of the stack</p>
+            <pre><code>function push(item) {
+  if (top >= capacity-1) {
+    console.log("Stack Overflow");
+    return;
+  }
+  stack[++top] = item;
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Pop</h4>
+            <p>Removes the top element from the stack</p>
+            <pre><code>function pop() {
+  if (top < 0) {
+    console.log("Stack Underflow");
+    return;
+  }
+  return stack[top--];
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Peek</h4>
+            <p>Returns the top element without removing it</p>
+            <pre><code>function peek() {
+  if (top < 0) {
+    console.log("Stack is empty");
+    return;
+  }
+  return stack[top];
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>isEmpty</h4>
+            <p>Checks if the stack is empty</p>
+            <pre><code>function isEmpty() {
+  return top < 0;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+      
+      <div class="interactive-section">
+        <h2>Interactive Stack</h2>
+        <div class="controls">
+          <input type="text" id="stack-input" placeholder="Enter value" class="input-field">
+          <button onclick="pushToStack()" class="btn btn-primary">Push</button>
+          <button onclick="popFromStack()" class="btn btn-secondary">Pop</button>
+          <button onclick="peekStack()" class="btn btn-accent">Peek</button>
+        </div>
+        <div id="stack-visualization" class="visualization stack-viz"></div>
+      </div>
+
+      <div class="complexity-section">
+        <h3>Time Complexity:</h3>
+        <table class="complexity-table">
+          <tr>
+            <th>Operation</th>
+            <th>Time Complexity</th>
+          </tr>
+          <tr>
+            <td>Push</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Pop</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Peek</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Search</td>
+            <td>O(n)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="main.html#topics">Topics</a></li>
+          <li><a href="main.html#key-concepts">Key Concepts</a></li>
+          <li><a href="main.html#about">About</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <p>Email: contact@dsafusion.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Created by Ishan Verma and Jaskirat Singh | DSA Fusion &copy; 2023</p>
+    </div>
+  </footer>
+
+  <script>
+        let stack = [];
+        let top = -1;
+    
+        function pushToStack() {
+          const value = document.getElementById('stack-input').value;
+          if (!value) return;
+          
+          stack.push(value);
+          visualizeStack();
+          document.getElementById('stack-input').value = '';
+        }
+    
+        function popFromStack() {
+          if (stack.length === 0) {
+            alert("Stack is empty!");
+            return;
+          }
+          const popped = stack.pop();
+          alert(`Popped: ${popped}`); // Fixed: added backticks
+          visualizeStack();
+        }
+    
+        function peekStack() {
+          if (stack.length === 0) {
+            alert("Stack is empty!");
+            return;
+          }
+          alert(`Top element: ${stack[stack.length - 1]}`); // Fixed: added backticks
+        }
+    
+        function visualizeStack() {
+          const container = document.getElementById('stack-visualization');
+          container.innerHTML = '';
+          
+          if (stack.length === 0) {
+            container.innerHTML = '<p class="empty-message">Stack is empty</p>';
+            return;
+          }
+          
+          // Create a copy and reverse to show top at top
+          const stackCopy = [...stack].reverse();
+          
+          stackCopy.forEach((item, index) => {
+            const element = document.createElement('div');
+            element.className = 'stack-element';
+            
+            if (index === 0) {
+              element.classList.add('top-element');
+              const topLabel = document.createElement('div');
+              topLabel.className = 'top-label';
+              topLabel.textContent = 'TOP';
+              element.appendChild(topLabel);
+            }
+            
+            const valueElement = document.createElement('div');
+            valueElement.className = 'stack-value';
+            valueElement.textContent = item;
+            element.appendChild(valueElement);
+            
+            container.appendChild(element);
+          });
+        }
+    </script>
+    
+</body>
+</html>

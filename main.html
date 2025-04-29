@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DSA Fusion - Master Data Structures & Algorithms</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3a0ca3;
+      --accent-color: #f72585;
+      --light-color: #f8f9fa;
+      --dark-color: #212529;
+      --text-color: #495057;
+      --bg-gradient: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-color);
+      color: var(--text-color);
+      overflow-x: hidden;
+    }
+    
+    /* Navbar Styles */
+    .navbar {
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 1rem 2rem;
+      transition: all 0.3s ease;
+    }
+    
+    .navbar.scrolled {
+      padding: 0.5rem 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .logo {
+      font-weight: 700;
+      font-size: 1.8rem;
+      background: var(--bg-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link {
+      font-weight: 500;
+      color: var(--dark-color);
+      margin: 0 0.5rem;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link:hover {
+      color: var(--primary-color);
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--primary-color);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: var(--bg-gradient);
+      color: white;
+      padding: 6rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==');
+      opacity: 0.3;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .hero h1 {
+      font-weight: 700;
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      font-family: 'Fira Code', monospace;
+    }
+    
+    .typewriter {
+      border-right: 3px solid white;
+      animation: blink-caret 0.75s step-end infinite;
+    }
+    
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: white; }
+    }
+    
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      opacity: 0.9;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      background-color: white;
+      color: var(--primary-color);
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      background-color: var(--accent-color);
+      color: white;
+    }
+    
+    /* Topics Section */
+    .topics, .key-concepts, .about {
+      padding: 5rem 0;
+    }
+    
+    section h2 {
+      font-weight: 700;
+      color: var(--dark-color);
+      margin-bottom: 3rem;
+      text-align: center;
+      position: relative;
+    }
+    
+    section h2::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: var(--bg-gradient);
+      margin: 1rem auto 0;
+      border-radius: 2px;
+    }
+    
+    .category h3 {
+      font-weight: 600;
+      color: var(--secondary-color);
+      margin: 2rem 0 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #eee;
+    }
+    
+    .topics-grid, .concepts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .topic-card, .concept-card {
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      text-align: center;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .topic-card:hover, .concept-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      border-color: rgba(67, 97, 238, 0.2);
+    }
+    
+    .topic-card i {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .topic-card:hover i {
+      transform: scale(1.2);
+      color: var(--accent-color);
+    }
+    
+    .topic-card h3, .concept-card h3 {
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--dark-color);
+    }
+    
+    .topic-card p, .concept-card p {
+      color: var(--text-color);
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+    
+    .resource-link {
+      display: inline-block;
+      color: var(--primary-color);
+      font-weight: 500;
+      text-decoration: none;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .resource-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: var(--primary-color);
+      transition: width 0.3s ease;
+    }
+    
+    .resource-link:hover {
+      color: var(--accent-color);
+    }
+    
+    .resource-link:hover::after {
+      width: 100%;
+      background-color: var(--accent-color);
+    }
+    
+    /* About Section */
+    .about {
+      background-color: #f8f9fa;
+    }
+    
+    .about p {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+    
+    /* Footer */
+    footer {
+      background-color: var(--dark-color);
+      color: white;
+      padding: 3rem 0 0;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    
+    .footer-section h3 {
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: white;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      width: 50%;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--primary-color);
+    }
+    
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .footer-section ul li {
+      margin-bottom: 0.8rem;
+    }
+    
+    .footer-section ul li a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .footer-section ul li a:hover {
+      color: white;
+      padding-left: 5px;
+    }
+    
+    .footer-section p {
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 0.5rem;
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding: 1.5rem 0;
+      margin-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.9rem;
+    }
+    
+    /* Animations */
+    .animate-delay-1 {
+      animation-delay: 0.2s;
+    }
+    
+    .animate-delay-2 {
+      animation-delay: 0.4s;
+    }
+    
+    .animate-delay-3 {
+      animation-delay: 0.6s;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .hero {
+        padding: 4rem 0;
+      }
+      
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      
+      .hero p {
+        font-size: 1rem;
+      }
+      
+      .topics, .key-concepts, .about {
+        padding: 3rem 0;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .navbar {
+        padding: 1rem;
+      }
+      
+      .logo {
+        font-size: 1.5rem;
+      }
+      
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+      
+      .topics-grid, .concepts-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <header>
+    <nav class="navbar navbar-expand-lg fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <span class="logo">DSA Fusion</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#topics">Topics</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#key-concepts">Concepts</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container text-center hero-content">
+      <h1 class="typewriter mb-4 animate__animated animate__fadeInDown" style="padding: 30px"></h1>
+      <p class="animate__animated animate__fadeIn animate__delay-1s">Your ultimate hub for learning and practicing DSA concepts with interactive examples and challenges.</p>
+      <a href="#topics" class="cta-button animate__animated animate__fadeInUp animate__delay-2s">Start Learning</a>
+    </div>
+  </section>
+
+  <!-- Topics Section -->
+  <section id="topics" class="topics">
+    <div class="container">
+      <h2 class="animate__animated animate__fadeIn">Data Structures & Algorithms</h2>
+      
+      <div class="category">
+        <h3 class="animate__animated animate__fadeIn animate-delay-1">Linear Data Structures</h3>
+        <div class="topics-grid">
+          <div class="topic-card animate__animated animate__fadeInUp">
+            <i class="fas fa-th-list"></i>
+            <h3>Arrays</h3>
+            <p>Collection of elements of the same type, stored in contiguous memory locations.</p>
+            <a href="array.html" class="resource-link">Learn More</a>
+          </div>
+          <div class="topic-card animate__animated animate__fadeInUp animate-delay-1">
+            <i class="fas fa-link"></i>
+            <h3>Linked Lists</h3>
+            <p>Sequence of nodes, each containing data and pointers to other nodes.</p>
+            <a href="linked-list.html" class="resource-link">Learn More</a>
+          </div>
+          <div class="topic-card animate__animated animate__fadeInUp animate-delay-2">
+            <i class="fas fa-layer-group"></i>
+            <h3>Stacks</h3>
+            <p>LIFO (Last-In, First-Out) structure with push and pop operations.</p>
+            <a href="stack.html" class="resource-link">Learn More</a>
+          </div>
+          <div class="topic-card animate__animated animate__fadeInUp animate-delay-3">
+            <i class="fas fa-people-arrows"></i>
+            <h3>Queues</h3>
+            <p>FIFO (First-In, First-Out) structure with enqueue and dequeue operations.</p>
+            <a href="queue.html" class="resource-link">Learn More</a>
+          </div>
+          <div class="topic-card animate__animated animate__fadeInUp animate-delay-1">
+            <i class="fas fa-key"></i>
+            <h3>Hash Tables</h3>
+            <p>Key-value pairs stored using a hash function for fast lookups.</p>
+            <a href="hash-table.html" class="resource-link">Learn More</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="category">
+        <h3 class="animate__animated animate__fadeIn animate-delay-1">Non-linear Data Structures</h3>
+        <div class="topics-grid">
+          <div class="topic-card animate__animated animate__fadeInUp">
+            <i class="fas fa-tree"></i>
+            <h3>Trees</h3>
+            <p>Hierarchical structures with nodes connected by edges.</p>
+            <a href="tree.html" class="resource-link">Learn More</a>
+          </div>
+          <div class="topic-card animate__animated animate__fadeInUp animate-delay-1">
+            <i class="fas fa-project-diagram"></i>
+            <h3>Graphs</h3>
+            <p>Collections of nodes connected by edges, representing relationships.</p>
+            <a href="graph.html" class="resource-link">Learn More</a>
+          </div>
+          <div class="topic-card animate__animated animate__fadeInUp animate-delay-2">
+            <i class="fas fa-balance-scale"></i>
+            <h3>AVL Trees</h3>
+            <p>Self-balancing BSTs that maintain efficient operations.</p>
+            <a href="avl-tree.html" class="resource-link">Learn More</a>
+          </div>
+          <div class="topic-card animate__animated animate__fadeInUp animate-delay-3">
+            <i class="fas fa-sitemap"></i>
+            <h3>Heaps</h3>
+            <p>Tree-based structures satisfying the heap property.</p>
+            <a href="heap.html" class="resource-link">Learn More</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="category">
+        <h3 class="animate__animated animate__fadeIn animate-delay-1">Advanced Data Structures</h3>
+        <div class="topics-grid">
+          <div class="topic-card animate__animated animate__fadeInUp">
+            <i class="fas fa-font"></i>
+            <h3>Tries</h3>
+            <p>Tree-like structures for efficient string retrieval.</p>
+            <a href="Tries.html" class="resource-link">Learn More</a>
+          </div>
+          <div class="topic-card animate__animated animate__fadeInUp animate-delay-1">
+            <i class="fas fa-ruler-combined"></i>
+            <h3>Segment Trees</h3>
+            <p>For querying and updating ranges in an array.</p>
+            <a href="segment-tree.html" class="resource-link">Learn More</a>
+          </div>
+          <div class="topic-card animate__animated animate__fadeInUp animate-delay-2">
+            <i class="fas fa-superscript"></i>
+            <h3>Fenwick Trees</h3>
+            <p>Binary Indexed Trees for prefix sum calculations.</p>
+            <a href="fenwick.html" class="resource-link">Learn More</a>
+          </div>
+          <div class="topic-card animate__animated animate__fadeInUp animate-delay-3">
+            <i class="fas fa-object-group"></i>
+            <h3>   t Set Union</h3>
+            <p>Tracks elements partitioned into disjoint subsets.</p>
+            <a href="disjoint-set.html" class="resource-link">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Concepts Section -->
+  <section id="key-concepts" class="key-concepts">
+    <div class="container">
+      <h2 class="animate__animated animate__fadeIn">Key Concepts & Operations</h2>
+      <div class="concepts-grid">
+        <div class="concept-card animate__animated animate__fadeInLeft">
+          <h3>Time & Space Complexity</h3>
+          <p>Analyzing efficiency in terms of time and memory (Big O notation).</p>
+        </div>
+        <div class="concept-card animate__animated animate__fadeInLeft animate-delay-1">
+          <h3>Searching Algorithms</h3>
+          <p>Linear search, binary search, and more.</p>
+        </div>
+        <div class="concept-card animate__animated animate__fadeInLeft animate-delay-2">
+          <h3>Sorting Algorithms</h3>
+          <p>Bubble sort, insertion sort, merge sort, quicksort, heapsort.</p>
+        </div>
+        <div class="concept-card animate__animated animate__fadeInLeft animate-delay-3">
+          <h3>Traversal Techniques</h3>
+          <p>Tree traversals (inorder, preorder, postorder), graph traversals (BFS, DFS).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about">
+    <div class="container">
+      <h2 class="animate__animated animate__fadeIn">About DSA Fusion</h2>
+      <p class="animate__animated animate__fadeIn animate-delay-1">DSA Fusion is a comprehensive learning platform designed to help students and professionals master Data Structures and Algorithms through interactive content, visualizations, and practice problems.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#topics">Topics</a></li>
+            <li><a href="#key-concepts">Key Concepts</a></li>
+            <li><a href="#about">About</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p>Email: contact@dsafusion.com</p>
+          <div class="social-links mt-3">
+            <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-white me-2"><i class="fab fa-github"></i></a>
+            <a href="#" class="text-white me-2"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>Created by Ishan Verma and Jaskirat Singh | DSA Fusion &copy; 2023</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Typewriter Effect Script -->
+  <script>
+    // Typewriter Effect
+    const typewriterText = "Master Data Structures & Algorithms";
+    const typewriterElement = document.querySelector('.typewriter');
+    
+    let i = 0;
+    const speed = 50; // typing speed in milliseconds
+    
+    function typeWriter() {
+      if (i < typewriterText.length) {
+        typewriterElement.innerHTML += typewriterText.charAt(i);
+        i++;
+        setTimeout(typeWriter, speed);
+      }
+    }
+    
+    // Start typing when page loads
+    window.addEventListener('load', typeWriter);
+    
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+    
+    // Animate elements when they come into view
+    const animateOnScroll = function() {
+      const elements = document.querySelectorAll('.animate__animated');
+      
+      elements.forEach(element => {
+        const elementPosition = element.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+        
+        if (elementPosition < windowHeight - 100) {
+          const animationClass = element.classList[1];
+          element.classList.add(animationClass);
+        }
+      });
+    };
+    
+    window.addEventListener('scroll', animateOnScroll);
+    window.addEventListener('load', animateOnScroll);
+  </script>
+</body>
+</html>

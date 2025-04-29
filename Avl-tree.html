@@ -1,0 +1,371 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AVL Trees - DSA Fusion</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">DSA Fusion</div>
+      <ul class="nav-links">
+        <li><a href="main.html#topics">Topics</a></li>
+        <li><a href="main.html#key-concepts">Key Concepts</a></li>
+        <li><a href="main.html#about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="topic-hero">
+    <div class="topic-hero-content">
+      <h1><i class="fas fa-balance-scale"></i> AVL Trees</h1>
+      <p>Learn about self-balancing binary search trees</p>
+    </div>
+  </section>
+
+  <section class="topic-content">
+    <div class="container">
+      <div class="theory-section">
+        <h2>What is an AVL Tree?</h2>
+        <p>An AVL tree is a self-balancing binary search tree where the difference between heights of left and right subtrees cannot be more than one for all nodes.</p>
+        
+        <h3>Key Characteristics:</h3>
+        <ul>
+          <li><strong>Balance Factor:</strong> Height difference between left and right subtrees (-1, 0, or 1)</li>
+          <li><strong>Rotations:</strong> Used to maintain balance (LL, RR, LR, RL)</li>
+          <li><strong>Height Balance:</strong> Ensures O(log n) time for all operations</li>
+          <li><strong>Efficient:</strong> Faster lookups than standard BSTs</li>
+        </ul>
+        
+        <h3>Basic Operations:</h3>
+        <div class="operations-grid">
+          <div class="operation-card">
+            <h4>Insertion</h4>
+            <p>Adds a node while maintaining balance</p>
+            <pre><code>function insert(node, value) {
+  // Standard BST insertion
+  if (!node) return new Node(value);
+  if (value < node.value) {
+    node.left = insert(node.left, value);
+  } else {
+    node.right = insert(node.right, value);
+  }
+  
+  // Update height
+  node.height = 1 + max(height(node.left), height(node.right));
+  
+  // Get balance factor
+  const balance = getBalance(node);
+  
+  // Perform rotations if unbalanced
+  // Left Left Case
+  if (balance > 1 && value < node.left.value) {
+    return rightRotate(node);
+  }
+  // Right Right Case
+  if (balance < -1 && value > node.right.value) {
+    return leftRotate(node);
+  }
+  // Left Right Case
+  if (balance > 1 && value > node.left.value) {
+    node.left = leftRotate(node.left);
+    return rightRotate(node);
+  }
+  // Right Left Case
+  if (balance < -1 && value < node.right.value) {
+    node.right = rightRotate(node.right);
+    return leftRotate(node);
+  }
+  
+  return node;
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Deletion</h4>
+            <p>Removes a node while maintaining balance</p>
+            <pre><code>function deleteNode(node, value) {
+  // Standard BST deletion
+  if (!node) return node;
+  if (value < node.value) {
+    node.left = deleteNode(node.left, value);
+  } else if (value > node.value) {
+    node.right = deleteNode(node.right, value);
+  } else {
+    if (!node.left || !node.right) {
+      const temp = node.left || node.right;
+      node = temp || null;
+    } else {
+      const temp = minValueNode(node.right);
+      node.value = temp.value;
+      node.right = deleteNode(node.right, temp.value);
+    }
+  }
+  
+  if (!node) return node;
+  
+  // Update height
+  node.height = 1 + max(height(node.left), height(node.right));
+  
+  // Get balance factor
+  const balance = getBalance(node);
+  
+  // Perform rotations if unbalanced
+  // Similar to insertion but may need more rotations
+  // Left Left Case
+  if (balance > 1 && getBalance(node.left) >= 0) {
+    return rightRotate(node);
+  }
+  // Left Right Case
+  if (balance > 1 && getBalance(node.left) < 0) {
+    node.left = leftRotate(node.left);
+    return rightRotate(node);
+  }
+  // Right Right Case
+  if (balance < -1 && getBalance(node.right) <= 0) {
+    return leftRotate(node);
+  }
+  // Right Left Case
+  if (balance < -1 && getBalance(node.right) > 0) {
+    node.right = rightRotate(node.right);
+    return leftRotate(node);
+  }
+  
+  return node;
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Rotations</h4>
+            <p>Rebalances the tree</p>
+            <pre><code>function rightRotate(y) {
+  const x = y.left;
+  const T2 = x.right;
+  
+  // Perform rotation
+  x.right = y;
+  y.left = T2;
+  
+  // Update heights
+  y.height = max(height(y.left), height(y.right)) + 1;
+  x.height = max(height(x.left), height(x.right)) + 1;
+  
+  return x;
+}
+
+function leftRotate(x) {
+  const y = x.right;
+  const T2 = y.left;
+  
+  // Perform rotation
+  y.left = x;
+  x.right = T2;
+  
+  // Update heights
+  x.height = max(height(x.left), height(x.right)) + 1;
+  y.height = max(height(y.left), height(y.right)) + 1;
+  
+  return y;
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Balance Check</h4>
+            <p>Calculates balance factor</p>
+            <pre><code>function getBalance(node) {
+  if (!node) return 0;
+  return height(node.left) - height(node.right);
+}
+
+function height(node) {
+  if (!node) return 0;
+  return node.height;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+      
+      <div class="interactive-section">
+        <h2>Interactive AVL Tree</h2>
+        <div class="controls">
+          <input type="number" id="avl-input" placeholder="Enter value" class="input-field">
+          <button onclick="insertAVLNode()" class="btn btn-primary">Insert</button>
+          <button onclick="deleteAVLNode()" class="btn btn-danger">Delete</button>
+          <button onclick="searchAVLNode()" class="btn btn-secondary">Search</button>
+        </div>
+        <div id="avl-visualization" class="visualization tree-viz"></div>
+      </div>
+
+      <div class="complexity-section">
+        <h3>Time Complexity:</h3>
+        <table class="complexity-table">
+          <tr>
+            <th>Operation</th>
+            <th>Time Complexity</th>
+          </tr>
+          <tr>
+            <td>Insertion</td>
+            <td>O(log n)</td>
+          </tr>
+          <tr>
+            <td>Deletion</td>
+            <td>O(log n)</td>
+          </tr>
+          <tr>
+            <td>Search</td>
+            <td>O(log n)</td>
+          </tr>
+          <tr>
+            <td>Rotation</td>
+            <td>O(1)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="main.html#topics">Topics</a></li>
+          <li><a href="main.html#key-concepts">Key Concepts</a></li>
+          <li><a href="main.html#about">About</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <p>Email: contact@dsafusion.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Created by Ishan Verma and Jaskirat Singh | DSA Fusion &copy; 2023</p>
+    </div>
+  </footer>
+
+  <script>
+    const TABLE_SIZE = 10;
+    let hashTable = new Array(TABLE_SIZE);
+
+    function hashFunction(key) {
+      let hash = 0;
+      for (let char of key) {
+        hash += char.charCodeAt(0);
+      }
+      return hash % TABLE_SIZE;
+    }
+
+    function insertPair() {
+      const key = document.getElementById('ht-key').value;
+      const value = document.getElementById('ht-value').value;
+      if (!key || !value) return;
+      
+      const index = hashFunction(key);
+      if (!hashTable[index]) {
+        hashTable[index] = [];
+      }
+      
+      // Check if key already exists
+      for (let i = 0; i < hashTable[index].length; i++) {
+        if (hashTable[index][i].key === key) {
+          hashTable[index][i].value = value;
+          visualizeHashTable();
+          clearInputs();
+          return;
+        }
+      }
+      
+      hashTable[index].push({ key, value });
+      visualizeHashTable();
+      clearInputs();
+    }
+
+    function searchPair() {
+      const key = document.getElementById('ht-key').value;
+      if (!key) return;
+      
+      const index = hashFunction(key);
+      if (!hashTable[index]) {
+        alert(`Key '${key}' not found`);
+        return;
+      }
+      
+      for (let pair of hashTable[index]) {
+        if (pair.key === key) {
+          alert(`Found: ${pair.key} => ${pair.value}`);
+          return;
+        }
+      }
+      
+      alert(`Key '${key}' not found`);
+    }
+
+    function deletePair() {
+      const key = document.getElementById('ht-key').value;
+      if (!key) return;
+      
+      const index = hashFunction(key);
+      if (!hashTable[index]) {
+        alert(`Key '${key}' not found`);
+        return;
+      }
+      
+      const initialLength = hashTable[index].length;
+      hashTable[index] = hashTable[index].filter(pair => pair.key !== key);
+      
+      if (hashTable[index].length === initialLength) {
+        alert(`Key '${key}' not found`);
+      } else {
+        alert(`Deleted key '${key}'`);
+        visualizeHashTable();
+      }
+    }
+
+    function visualizeHashTable() {
+      const container = document.getElementById('hash-table-visualization');
+      container.innerHTML = '';
+      
+      for (let i = 0; i < TABLE_SIZE; i++) {
+        const bucketElement = document.createElement('div');
+        bucketElement.className = 'ht-bucket';
+        
+        const indexElement = document.createElement('div');
+        indexElement.className = 'ht-index';
+        indexElement.textContent = `Index ${i}`;
+        bucketElement.appendChild(indexElement);
+        
+        if (hashTable[i] && hashTable[i].length > 0) {
+          const pairsElement = document.createElement('div');
+          pairsElement.className = 'ht-pairs';
+          
+          hashTable[i].forEach(pair => {
+            const pairElement = document.createElement('div');
+            pairElement.className = 'ht-pair';
+            pairElement.textContent = `${pair.key} : ${pair.value}`;
+            pairsElement.appendChild(pairElement);
+          });
+          
+          bucketElement.appendChild(pairsElement);
+        } else {
+          const emptyElement = document.createElement('div');
+          emptyElement.className = 'ht-empty';
+          emptyElement.textContent = 'Empty';
+          bucketElement.appendChild(emptyElement);
+        }
+        
+        container.appendChild(bucketElement);
+      }
+    }
+
+    function clearInputs() {
+      document.getElementById('ht-key').value = '';
+      document.getElementById('ht-value').value = '';
+    }
+
+    // Initialize visualization
+    visualizeHashTable();
+  </script>
+</body>
+</html>

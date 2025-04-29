@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hash Table - DSA Fusion</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">DSA Fusion</div>
+      <ul class="nav-links">
+        <li><a href="main.html#topics">Topics</a></li>
+        <li><a href="main.html#key-concepts">Key Concepts</a></li>
+        <li><a href="main.html#about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="topic-hero">
+    <div class="topic-hero-content">
+      <h1><i class="fas fa-key"></i> Hash Table</h1>
+      <p>Learn about hash tables and their key-value storage</p>
+    </div>
+  </section>
+
+  <section class="topic-content">
+    <div class="container">
+      <div class="theory-section">
+        <h2>What is a Hash Table?</h2>
+        <p>A hash table is a data structure that implements an associative array abstract data type, a structure that can map keys to values using a hash function.</p>
+        
+        <h3>Key Characteristics:</h3>
+        <ul>
+          <li><strong>Key-Value Pairs:</strong> Stores data in key-value format</li>
+          <li><strong>Hash Function:</strong> Computes an index into an array of buckets</li>
+          <li><strong>Collision Handling:</strong> Uses chaining or open addressing</li>
+          <li><strong>Fast Access:</strong> Average case O(1) time complexity</li>
+        </ul>
+        
+        <h3>Basic Operations:</h3>
+        <div class="operations-grid">
+          <div class="operation-card">
+            <h4>Insert</h4>
+            <p>Adds a key-value pair to the hash table</p>
+            <pre><code>function insert(key, value) {
+  let index = hashFunction(key);
+  if (!table[index]) {
+    table[index] = [];
+  }
+  table[index].push({key, value});
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Search</h4>
+            <p>Finds the value associated with a key</p>
+            <pre><code>function search(key) {
+  let index = hashFunction(key);
+  if (!table[index]) return null;
+  for (let pair of table[index]) {
+    if (pair.key === key) return pair.value;
+  }
+  return null;
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Delete</h4>
+            <p>Removes a key-value pair from the hash table</p>
+            <pre><code>function deleteKey(key) {
+  let index = hashFunction(key);
+  if (!table[index]) return false;
+  table[index] = table[index].filter(pair => pair.key !== key);
+  return true;
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Hash Function</h4>
+            <p>Computes index from key</p>
+            <pre><code>function hashFunction(key) {
+  let hash = 0;
+  for (let char of key) {
+    hash += char.charCodeAt(0);
+  }
+  return hash % size;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+      
+      <div class="interactive-section">
+        <h2>Interactive Hash Table</h2>
+        <div class="controls">
+          <input type="text" id="ht-key" placeholder="Key" class="input-field small">
+          <input type="text" id="ht-value" placeholder="Value" class="input-field small">
+          <button onclick="insertPair()" class="btn btn-primary">Insert</button>
+          <button onclick="searchPair()" class="btn btn-secondary">Search</button>
+          <button onclick="deletePair()" class="btn btn-danger">Delete</button>
+        </div>
+        <div id="hash-table-visualization" class="visualization ht-viz"></div>
+      </div>
+
+      <div class="complexity-section">
+        <h3>Time Complexity:</h3>
+        <table class="complexity-table">
+          <tr>
+            <th>Operation</th>
+            <th>Average Case</th>
+            <th>Worst Case</th>
+          </tr>
+          <tr>
+            <td>Insert</td>
+            <td>O(1)</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td>Search</td>
+            <td>O(1)</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td>Delete</td>
+            <td>O(1)</td>
+            <td>O(n)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="main.html#topics">Topics</a></li>
+          <li><a href="main.html#key-concepts">Key Concepts</a></li>
+          <li><a href="main.html#about">About</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <p>Email: contact@dsafusion.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Created by Ishan Verma and Jaskirat Singh | DSA Fusion &copy; 2023</p>
+    </div>
+  </footer>
+
+  <script>
+    const TABLE_SIZE = 10;
+    let hashTable = new Array(TABLE_SIZE);
+
+    function hashFunction(key) {
+      let hash = 0;
+      for (let char of key) {
+        hash += char.charCodeAt(0);
+      }
+      return hash % TABLE_SIZE;
+    }
+
+    function insertPair() {
+      const key = document.getElementById('ht-key').value;
+      const value = document.getElementById('ht-value').value;
+      if (!key || !value) return;
+      
+      const index = hashFunction(key);
+      if (!hashTable[index]) {
+        hashTable[index] = [];
+      }
+      
+      // Check if key already exists
+      for (let i = 0; i < hashTable[index].length; i++) {
+        if (hashTable[index][i].key === key) {
+          hashTable[index][i].value = value;
+          visualizeHashTable();
+          clearInputs();
+          return;
+        }
+      }
+      
+      hashTable[index].push({ key, value });
+      visualizeHashTable();
+      clearInputs();
+    }
+
+    function searchPair() {
+      const key = document.getElementById('ht-key').value;
+      if (!key) return;
+      
+      const index = hashFunction(key);
+      if (!hashTable[index]) {
+        alert(`Key '${key}' not found`);
+        return;
+      }
+      
+      for (let pair of hashTable[index]) {
+        if (pair.key === key) {
+          alert(`Found: ${pair.key} => ${pair.value}`);
+          return;
+        }
+      }
+      
+      alert(`Key '${key}' not found`);
+    }
+
+    function deletePair() {
+      const key = document.getElementById('ht-key').value;
+      if (!key) return;
+      
+      const index = hashFunction(key);
+      if (!hashTable[index]) {
+        alert(`Key '${key}' not found`);
+        return;
+      }
+      
+      const initialLength = hashTable[index].length;
+      hashTable[index] = hashTable[index].filter(pair => pair.key !== key);
+      
+      if (hashTable[index].length === initialLength) {
+        alert(`Key '${key}' not found`);
+      } else {
+        alert(`Deleted key '${key}'`);
+        visualizeHashTable();
+      }
+    }
+
+    function visualizeHashTable() {
+      const container = document.getElementById('hash-table-visualization');
+      container.innerHTML = '';
+      
+      for (let i = 0; i < TABLE_SIZE; i++) {
+        const bucketElement = document.createElement('div');
+        bucketElement.className = 'ht-bucket';
+        
+        const indexElement = document.createElement('div');
+        indexElement.className = 'ht-index';
+        indexElement.textContent = `Index ${i}`;
+        bucketElement.appendChild(indexElement);
+        
+        if (hashTable[i] && hashTable[i].length > 0) {
+          const pairsElement = document.createElement('div');
+          pairsElement.className = 'ht-pairs';
+          
+          hashTable[i].forEach(pair => {
+            const pairElement = document.createElement('div');
+            pairElement.className = 'ht-pair';
+            pairElement.textContent = `${pair.key} : ${pair.value}`;
+            pairsElement.appendChild(pairElement);
+          });
+          
+          bucketElement.appendChild(pairsElement);
+        } else {
+          const emptyElement = document.createElement('div');
+          emptyElement.className = 'ht-empty';
+          emptyElement.textContent = 'Empty';
+          bucketElement.appendChild(emptyElement);
+        }
+        
+        container.appendChild(bucketElement);
+      }
+    }
+
+    function clearInputs() {
+      document.getElementById('ht-key').value = '';
+      document.getElementById('ht-value').value = '';
+    }
+
+    // Initialize visualization
+    visualizeHashTable();
+  </script>
+</body>
+</html>

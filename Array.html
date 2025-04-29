@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arrays - DSA Fusion</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">DSA Fusion</div>
+      <ul class="nav-links">
+        <li><a href="main.html#topics">Topics</a></li>
+        <li><a href="main.html#key-concepts">Key Concepts</a></li>
+        <li><a href="main.html#about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="topic-hero">
+    <div class="topic-hero-content">
+      <h1><i class="fas fa-th-list"></i> Arrays</h1>
+      <p>Learn about arrays and their applications in programming</p>
+    </div>
+  </section>
+
+  <section class="topic-content">
+    <div class="container">
+      <div class="theory-section">
+        <h2>What is an Array?</h2>
+        <p>An array is a collection of elements of the same type, stored in contiguous memory locations. Each element can be accessed directly by its index.</p>
+        
+        <h3>Key Characteristics:</h3>
+        <ul>
+          <li><strong>Fixed Size:</strong> The size of an array is fixed at the time of declaration.</li>
+          <li><strong>Contiguous Memory:</strong> Elements are stored in adjacent memory locations.</li>
+          <li><strong>Random Access:</strong> Any element can be accessed in constant time using its index.</li>
+          <li><strong>Homogeneous Elements:</strong> All elements must be of the same data type.</li>
+        </ul>
+        
+        <h3>Basic Operations:</h3>
+        <div class="operations-grid">
+          <div class="operation-card">
+            <h4>Traversal</h4>
+            <p>Visiting each element of the array exactly once.</p>
+            <pre><code>for(int i=0; i&lt;n; i++) {
+  print(arr[i]);
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Insertion</h4>
+            <p>Adding an element at a specific position.</p>
+            <pre><code>// Insert x at position pos
+for(int i=n; i>pos; i--) {
+  arr[i] = arr[i-1];
+}
+arr[pos] = x;
+n++;</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Deletion</h4>
+            <p>Removing an element from a specific position.</p>
+            <pre><code>// Delete element at position pos
+for(int i=pos; i&lt;n-1; i++) {
+  arr[i] = arr[i+1];
+}
+n--;</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Searching</h4>
+            <p>Finding the position of an element.</p>
+            <pre><code>// Linear Search
+for(int i=0; i&lt;n; i++) {
+  if(arr[i] == key) return i;
+}
+return -1;</code></pre>
+          </div>
+        </div>
+        
+        <h3>Time Complexity:</h3>
+        <table class="complexity-table">
+          <tr>
+            <th>Operation</th>
+            <th>Time Complexity</th>
+          </tr>
+          <tr>
+            <td>Access</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Search</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td>Insertion</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td>Deletion</td>
+            <td>O(n)</td>
+          </tr>
+        </table>
+      </div>
+      
+      <div class="practice-section">
+        <h2>Practice Problems</h2>
+        <div class="problem-card">
+          <h3>1. Reverse an Array</h3>
+          <p>Write a function to reverse the elements of an array in-place.</p>
+          <div class="solution-toggle">
+            <button class="solution-btn">Show Solution</button>
+            <div class="solution-content">
+              <pre><code>void reverseArray(int arr[], int n) {
+  int start = 0, end = n-1;
+  while(start < end) {
+    int temp = arr[start];
+    arr[start] = arr[end];
+    arr[end] = temp;
+    start++;
+    end--;
+  }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+        
+        <div class="problem-card">
+          <h3>2. Find Maximum Subarray Sum (Kadane's Algorithm)</h3>
+          <p>Given an array of integers, find the contiguous subarray with the largest sum.</p>
+          <div class="solution-toggle">
+            <button class="solution-btn">Show Solution</button>
+            <div class="solution-content">
+              <pre><code>int maxSubarraySum(int arr[], int n) {
+  int max_current = arr[0];
+  int max_global = arr[0];
+  
+  for(int i=1; i&lt;n; i++) {
+    max_current = max(arr[i], max_current + arr[i]);
+    if(max_current > max_global) {
+      max_global = max_current;
+    }
+  }
+  return max_global;
+}</code></pre>
+            </div>
+          </div>
+        </div>
+        
+        <div class="problem-card">
+          <h3>3. Two Sum Problem</h3>
+          <p>Given an array of integers, return indices of the two numbers that add up to a specific target.</p>
+          <div class="solution-toggle">
+            <button class="solution-btn">Show Solution</button>
+            <div class="solution-content">
+              <pre><code>vector&lt;int&gt; twoSum(vector&lt;int&gt;& nums, int target) {
+  unordered_map&lt;int, int&gt; map;
+  for(int i=0; i&lt;nums.size(); i++) {
+    int complement = target - nums[i];
+    if(map.find(complement) != map.end()) {
+      return {map[complement], i};
+    }
+    map[nums[i]] = i;
+  }
+  return {};
+}</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="main.html#topics">Topics</a></li>
+          <li><a href="main.html#key-concepts">Key Concepts</a></li>
+          <li><a href="main.html#about">About</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <p>Email: contact@dsafusion.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Created by Ishan Verma and Jaskirat Singh | DSA Fusion &copy; 2023</p>
+    </div>
+  </footer>
+
+  <script>
+    // Toggle solution visibility
+    document.querySelectorAll('.solution-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const solutionContent = btn.nextElementSibling;
+        solutionContent.style.display = solutionContent.style.display === 'block' ? 'none' : 'block';
+        btn.textContent = solutionContent.style.display === 'block' ? 'Hide Solution' : 'Show Solution';
+      });
+    });
+  </script>
+</body>
+</html>

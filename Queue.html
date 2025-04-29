@@ -1,0 +1,224 @@
+Queue.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Queue - DSA Fusion</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">DSA Fusion</div>
+      <ul class="nav-links">
+        <li><a href="main.html#topics">Topics</a></li>
+        <li><a href="main.html#key-concepts">Key Concepts</a></li>
+        <li><a href="main.html#about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="topic-hero">
+    <div class="topic-hero-content">
+      <h1><i class="fas fa-people-arrows"></i> Queue</h1>
+      <p>Learn about queues and their FIFO principle</p>
+    </div>
+  </section>
+
+  <section class="topic-content">
+    <div class="container">
+      <div class="theory-section">
+        <h2>What is a Queue?</h2>
+        <p>A queue is a linear data structure that follows the First In First Out (FIFO) principle. The element inserted first is accessed first.</p>
+        
+        <h3>Key Characteristics:</h3>
+        <ul>
+          <li><strong>FIFO Principle:</strong> First In First Out</li>
+          <li><strong>Two Main Operations:</strong> Enqueue (add) and Dequeue (remove)</li>
+          <li><strong>Front and Rear:</strong> Front points to first element, rear to last</li>
+          <li><strong>Implementation:</strong> Can be implemented using arrays or linked lists</li>
+        </ul>
+        
+        <h3>Basic Operations:</h3>
+        <div class="operations-grid">
+          <div class="operation-card">
+            <h4>Enqueue</h4>
+            <p>Adds an element to the rear of the queue</p>
+            <pre><code>function enqueue(item) {
+  if (rear == capacity-1) {
+    console.log("Queue Overflow");
+    return;
+  }
+  if (front == -1) front = 0;
+  queue[++rear] = item;
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Dequeue</h4>
+            <p>Removes an element from the front of the queue</p>
+            <pre><code>function dequeue() {
+  if (front == -1 || front > rear) {
+    console.log("Queue Underflow");
+    return;
+  }
+  return queue[front++];
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>Front</h4>
+            <p>Returns the front element without removing it</p>
+            <pre><code>function getFront() {
+  if (front == -1 || front > rear) {
+    console.log("Queue is empty");
+    return;
+  }
+  return queue[front];
+}</code></pre>
+          </div>
+          <div class="operation-card">
+            <h4>isEmpty</h4>
+            <p>Checks if the queue is empty</p>
+            <pre><code>function isEmpty() {
+  return front == -1 || front > rear;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+      
+      <div class="interactive-section">
+        <h2>Interactive Queue</h2>
+        <div class="controls">
+          <input type="text" id="queue-input" placeholder="Enter value" class="input-field">
+          <button onclick="enqueue()" class="btn btn-primary">Enqueue</button>
+          <button onclick="dequeue()" class="btn btn-secondary">Dequeue</button>
+          <button onclick="getFront()" class="btn btn-accent">Front</button>
+        </div>
+        <div id="queue-visualization" class="visualization queue-viz"></div>
+      </div>
+
+      <div class="complexity-section">
+        <h3>Time Complexity:</h3>
+        <table class="complexity-table">
+          <tr>
+            <th>Operation</th>
+            <th>Time Complexity</th>
+          </tr>
+          <tr>
+            <td>Enqueue</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Dequeue</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Front</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Search</td>
+            <td>O(n)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="main.html#topics">Topics</a></li>
+          <li><a href="main.html#key-concepts">Key Concepts</a></li>
+          <li><a href="main.html#about">About</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <p>Email: contact@dsafusion.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Created by Ishan Verma and Jaskirat Singh | DSA Fusion &copy; 2023</p>
+    </div>
+  </footer>
+
+  <script>
+    let queue = [];
+    let front = 0;
+    let rear = -1;
+
+    function enqueue() {
+        const value = document.getElementById('queue-input').value;
+        if (!value) return;
+        
+        queue.push(value);
+        rear++;
+        visualizeQueue();
+        document.getElementById('queue-input').value = '';
+    }
+
+    function dequeue() {
+        if (front > rear) {
+            alert("Queue is empty!");
+            return;
+        }
+        const dequeued = queue[front];
+        front++;
+        alert(`Dequeued: ${dequeued}`);
+        visualizeQueue();
+    }
+
+    function getFront() {
+        if (front > rear) {
+            alert("Queue is empty!");
+            return;
+        }
+        alert(`Front element: ${queue[front]}`);
+    }
+
+    function visualizeQueue() {
+        const container = document.getElementById('queue-visualization');
+        container.innerHTML = '';
+        
+        if (front > rear) {
+            container.innerHTML = '<p class="empty-message">Queue is empty</p>';
+            return;
+        }
+        
+        // Only show elements from front to rear
+        for (let i = front; i <= rear; i++) {
+            const element = document.createElement('div');
+            element.className = 'queue-element';
+            
+            if (i === front) {
+                element.classList.add('front-element');
+                const frontLabel = document.createElement('div');
+                frontLabel.className = 'front-label';
+                frontLabel.textContent = 'FRONT';
+                element.appendChild(frontLabel);
+            }
+            
+            if (i === rear) {
+                element.classList.add('rear-element');
+                const rearLabel = document.createElement('div');
+                rearLabel.className = 'rear-label';
+                rearLabel.textContent = 'REAR';
+                element.appendChild(rearLabel);
+            }
+            
+            const valueElement = document.createElement('div');
+            valueElement.className = 'queue-value';
+            valueElement.textContent = queue[i];
+            element.appendChild(valueElement);
+            
+            container.appendChild(element);
+        }
+    }
+</script>
+
+</body>
+</html>
